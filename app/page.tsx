@@ -1,18 +1,18 @@
 'use client';
 import React, { ChangeEventHandler, useState } from 'react';
-import { SketchPicker } from 'react-color';
+import { SketchPicker, ColorResult } from 'react-color';
 import S from '@/app/style'
 
 const createGrid = ( rows : number, cols: number ) => {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => 0)
+    Array.from({ length: cols }, () => '')
   );
 };
 
 const Home = () => {
   const [rows, setRows] = useState(10);
   const [cols, setCols] = useState(10);
-  const [grid, setGrid] = useState(createGrid(10, 10));
+  const [grid, setGrid] = useState<string[][]>(createGrid(10, 10));
   const [selectedColor, setSelectedColor] = useState('#ffffff'); 
 
   const handleRowsChange:ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -27,7 +27,7 @@ const Home = () => {
     setGrid(createGrid(rows, newCols));
   };
 
-  const handleColorChange = (color) => {
+  const handleColorChange = (color: ColorResult) => {
     setSelectedColor(color.hex);
   };
 
@@ -68,7 +68,8 @@ const Home = () => {
           <S.Row key={rowIndex} >
             {row.map((col, colIndex) => (
               <S.Cell key={colIndex} onClick={() => handleCellClick(rowIndex, colIndex)}
-              style={{backgroundColor: col}}/>
+              style={{backgroundColor: col}}
+              />
             ))}
           </S.Row>
         ))}
